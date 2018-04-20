@@ -1,0 +1,36 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sensei</title>
+</head>
+
+<body>
+    <style type="text/css">
+        *:not(input):not(textarea) {
+            -webkit-user-select: none;
+            /* disable selection/Copy of UIWebView */
+            -webkit-touch-callout: none;
+            /* disable the IOS popup when long-press on a link */
+        }
+    </style>
+
+    <!-- my own or 3rd party library -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="style.css">
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="lib/yaml.min.js"></script>
+    <script src="lib/paper-full.min.js"></script>
+    <script src="src/xac.utilities.js"></script>
+    <!-- <script src="src/xac.array.js"></script> -->
+
+    <!-- project specific code -->
+    <script src="src/sensei.main.js"></script>
+    <script src="src/sensei.touch.js"></script>
+
+</body>
+
+</html>
