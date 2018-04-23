@@ -9,6 +9,7 @@
 var SENSEI = SENSEI || {};
 
 SENSEI.visualizations = {};
+SENSEI.clearings = {};
 
 //
 //  jquery ready function
@@ -42,9 +43,11 @@ SENSEI.initUI = function() {
 
     selSensors.selectmenu({
       change: function(e, ui) {
+        if (SENSEI.clear != undefined) SENSEI.clear();
         var nameSensor = ui.item.label;
-        var visualize = SENSEI.visualizations[nameSensor];
-        if (visualize != undefined) visualize();
+        SENSEI.visualize = SENSEI.visualizations[nameSensor];
+        SENSEI.clear = SENSEI.clearings[nameSensor];
+        if (SENSEI.visualize != undefined) SENSEI.visualize();
       }
     });
     selSensors.selectmenu("option", "width", "100%");

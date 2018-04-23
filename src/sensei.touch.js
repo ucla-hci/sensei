@@ -8,7 +8,7 @@
 
 var SENSEI = SENSEI || {};
 
-SENSEI.visualizeTouch = function() {
+SENSEI.visualizations["touch"] = function() {
   var canvas = $("#canvasVis");
   var positionInfo = canvas[0].getBoundingClientRect();
   var top = positionInfo.top;
@@ -25,7 +25,7 @@ SENSEI.visualizeTouch = function() {
   };
 
   // update visuals of a touch event
-  var update = function(e) {
+  SENSEI.updateTouchVis = function(e) {
     paper.project.activeLayer.removeChildren();
 
     for (t of e.targetTouches) {
@@ -67,9 +67,15 @@ SENSEI.visualizeTouch = function() {
   };
 
   // add event handlers
-  canvas.on("touchstart", update);
-  canvas.on("touchmove", update);
-  canvas.on("touchend", update);
+  canvas.on("touchstart", SENSEI.updateTouchVis);
+  canvas.on("touchmove", SENSEI.updateTouchVis);
+  canvas.on("touchend", SENSEI.updateTouchVis);
 };
 
-SENSEI.visualizations["touch"] = SENSEI.visualizeTouch;
+SENSEI.clearings["touch"] = function() {
+  paper.project.activeLayer.removeChildren();
+  var canvas = $("#canvasVis");
+  canvas.off("touchstart", SENSEI.updateTouchVis);
+  canvas.off("touchmove", SENSEI.updateTouchVis);
+  canvas.off("touchend", SENSEI.updateTouchVis);
+};
