@@ -27,13 +27,11 @@ SENSEI.visualizations["motion"] = function() {
   var top = positionInfo.top;
   var left = positionInfo.left;
   var width = positionInfo.width;
-  var height = positionInfo.height;
-  var from = new paper.Point(width / 2, height / 2);
 
   const MAXACCELERATION = 9.8;
   const MAXROTATIONRATE = 180;
-  const MAXY = 32;
   const MARGIN = 5;
+  const MAXY = Math.min(positionInfo.height / 12 - MARGIN, 32);
 
   paper.setup(canvas[0]);
 
@@ -141,5 +139,5 @@ SENSEI.visualizations["motion"] = function() {
 
 SENSEI.clearings["motion"] = function() {
   paper.project.activeLayer.removeChildren();
-  $(window).off("deviceorientation", SENSEI.updateMotionVis);
+  $(window).off("devicemotion", SENSEI.updateMotionVis);
 };
