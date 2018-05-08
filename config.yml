@@ -3,9 +3,10 @@ sensors:
   - touch: 0
   - orientation: 1
   - motion: 2
-  - camera: 3
-  - proximity: 4
-  - microphone: 5
+  - front camera: 3
+  - back camera: 4
+  - proximity: 5
+  - microphone: 6
 
 # ui
 mainTablePath: 'assets/maintable.html'
