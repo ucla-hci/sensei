@@ -36,7 +36,7 @@ SENSEI.showCameraFeed = function(facingMode) {
 
   $("#tdDemo").append(SENSEI.videoCamera);
 
-  // request the camera.
+  // request the camera
   navigator.getUserMedia(
     // constraints
     {
