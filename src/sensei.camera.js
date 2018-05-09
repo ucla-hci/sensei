@@ -2,7 +2,7 @@
 //
 //  demonstrating the video feed from camera
 //
-//  by xiangchen@acm.org, v1.0 04/2018
+//  by xiangchen@acm.org, v1.0 05/2018
 //
 //  ref: http://blog.teamtreehouse.com/accessing-the-device-camera-with-getusermedia
 //
@@ -19,6 +19,7 @@ SENSEI.visualizations["back camera"] = function() {
 };
 
 SENSEI.showCameraFeed = function(facingMode) {
+  // detect if brower supports media capture
   if (navigator.getUserMedia == undefined) {
     console.err("browser does not support getUserMedia");
     return;
@@ -41,11 +42,11 @@ SENSEI.showCameraFeed = function(facingMode) {
     {
       video: { facingMode: { exact: facingMode } }
     },
-    // success Callback
-    function(localMediaStream) {
-      SENSEI.videoCamera.prop("srcObject", localMediaStream);
+    // success callback
+    function(stream) {
+      SENSEI.videoCamera.prop("srcObject", stream);
     },
-    // error Callback
+    // error callback
     function(err) {
       console.error(
         "The following error occurred when trying to use getUserMedia: " + err
