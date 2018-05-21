@@ -12,4 +12,4 @@ cd sensei-master
 
 Open the browser on your phone, navigate to https://<machine_ip_address>:9999. You will encounter some security warning depending on which browser you use. By pass them and you will see the Sensei.
 
-![touch](assets/sensei1_touch.gif)
+![touch](assets/sensei1_touch.gif)  ![orientation](assets/sensei2_orientation.gif)  ![motion](assets/sensei3_motion.gif)  ![camera](assets/sensei4_camera.gif)  ![microphone](assets/sensei5_mic.gif)
