@@ -16,10 +16,10 @@ Make sure your phone and the machine that runs sensei are under the same wireles
 After downloading or cloning the repo:
 ```shell
 cd sensei-master
-./serverup 9999
+python serverup.py 8888
 ```
 
-Open the browser on your phone, navigate to ```https://<machine_ip_address>:9999```. You will encounter some security warning depending on which browser you use. Bypass them and you will see the Sensei.
+Open the browser on your phone, navigate to ```https://<machine_ip_address>:8888```. You will encounter some security warning depending on which browser you use. Bypass them and you will see the Sensei.
 
 ![touch](assets/sensei1_touch.gif)  ![orientation](assets/sensei2_orientation.gif)  ![motion](assets/sensei3_motion.gif)  
 ![camera](assets/sensei4_camera.gif)  ![microphone](assets/sensei5_mic.gif)
