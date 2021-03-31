@@ -1,20 +1,20 @@
-//	........................................................................................................
+//	.................................................................................................
 //
 //  demonstrating microphone
 //
-//  by xiangchen@acm.org, v1.0 05/2018
+//  by xac@ucla.edu, v2.0 03/2021
 //
 //  ref: http://blog.teamtreehouse.com/accessing-the-device-camera-with-getusermedia
 //       https://codepen.io/zapplebee/pen/gbNbZE
 //
-//	........................................................................................................
+//	.................................................................................................
 
 var SENSEI = SENSEI || {};
 
-SENSEI.visualizations["microphone"] = function() {
+SENSEI.visualizations["microphone"] = function () {
   // detect if brower supports media capture
-  if (navigator.getUserMedia == undefined) {
-    console.err("browser does not support getUserMedia");
+  if (navigator.mediaDevices.getUserMedia == undefined) {
+    console.error("browser does not support getUserMedia");
     return;
   }
 
@@ -35,13 +35,13 @@ SENSEI.visualizations["microphone"] = function() {
   paper.setup(canvas[0]);
 
   // request microphone
-  navigator.getUserMedia(
+  navigator.mediaDevices.getUserMedia(
     // constraints
     {
       audio: true
-    },
+    })
     // success callback
-    function(stream) {
+    .then(function (stream) {
       window.persistAudioStream = stream;
       var audioContext = new AudioContext();
       var audioStream = audioContext.createMediaStreamSource(stream);
@@ -52,7 +52,7 @@ SENSEI.visualizations["microphone"] = function() {
       var binWidth = (width - margin * 2) / analyzer.frequencyBinCount;
 
       // recurring drawing function for the visualization
-      var draw = function() {
+      var draw = function () {
         SENSEI.requestId = requestAnimationFrame(draw);
         paper.project.activeLayer.removeChildren();
         analyzer.getByteFrequencyData(frequencyArray);
@@ -70,17 +70,16 @@ SENSEI.visualizations["microphone"] = function() {
 
       // initial call
       draw();
-    },
+    })
     // error callback
-    function(err) {
+    .catch(function (err) {
       console.error(
         "The following error occurred when trying to use getUserMedia: " + err
       );
-    }
-  );
+    });
 };
 
-SENSEI.clearings["microphone"] = function() {
+SENSEI.clearings["microphone"] = function () {
   paper.project.activeLayer.removeChildren();
   cancelAnimationFrame(SENSEI.requestId);
 };

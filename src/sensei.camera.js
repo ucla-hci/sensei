@@ -1,27 +1,27 @@
-//	........................................................................................................
+//	.................................................................................................
 //
 //  demonstrating the video feed from camera
 //
-//  by xiangchen@acm.org, v1.0 05/2018
+//  by xac@ucla.edu, v2.0 03/2021
 //
 //  ref: http://blog.teamtreehouse.com/accessing-the-device-camera-with-getusermedia
 //
-//	........................................................................................................
+//	.................................................................................................
 
 var SENSEI = SENSEI || {};
 
-SENSEI.visualizations["front camera"] = function() {
+SENSEI.visualizations["front camera"] = function () {
   SENSEI.showCameraFeed("user");
 };
 
-SENSEI.visualizations["back camera"] = function() {
+SENSEI.visualizations["back camera"] = function () {
   SENSEI.showCameraFeed("environment");
 };
 
-SENSEI.showCameraFeed = function(facingMode) {
+SENSEI.showCameraFeed = function (facingMode) {
   // detect if brower supports media capture
-  if (navigator.getUserMedia == undefined) {
-    console.err("browser does not support getUserMedia");
+  if (navigator.mediaDevices.getUserMedia == undefined) {
+    console.error("browser does not support getUserMedia");
     return;
   }
 
@@ -37,27 +37,26 @@ SENSEI.showCameraFeed = function(facingMode) {
   $("#tdDemo").append(SENSEI.videoCamera);
 
   // request the camera
-  navigator.getUserMedia(
+  navigator.mediaDevices.getUserMedia(
     // constraints
     {
       video: { facingMode: { exact: facingMode } }
-    },
-    // success callback
-    function(stream) {
+    })
+    .then(function (stream) {
+      /* use the stream */
       SENSEI.videoCamera.prop("srcObject", stream);
-    },
-    // error callback
-    function(err) {
+    })
+    .catch(function (err) {
+      /* handle the error */
       console.error(
         "The following error occurred when trying to use getUserMedia: " + err
       );
-    }
-  );
+    });
 };
 
 SENSEI.clearings["front camera"] = SENSEI.clearings[
   "back camera"
-] = function() {
+] = function () {
   // restore the canvas
   SENSEI.videoCamera.remove();
   $("#tdDemo").append(SENSEI.canvas);

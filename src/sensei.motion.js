@@ -1,12 +1,12 @@
-//	........................................................................................................
+//	.................................................................................................
 //
 //	visualizing device motion related properties
 //
-//  by xiangchen@acm.org, v1.0 04/2018
+//  by xac@ucla.edu, v2.0 03/2021
 //
 //  ref: https://developer.mozilla.org/en-US/docs/Web/API/Detecting_device_orientation
 //
-//	........................................................................................................
+//	.................................................................................................
 
 var SENSEI = SENSEI || {};
 
@@ -21,7 +21,7 @@ SENSEI.rotAlphas = [];
 SENSEI.rotBetas = [];
 SENSEI.rotGammas = [];
 
-SENSEI.visualizations["motion"] = function() {
+SENSEI.visualizations["motion"] = function () {
   var canvas = $("#canvasVis");
   var positionInfo = canvas[0].getBoundingClientRect();
   var top = positionInfo.top;
@@ -36,7 +36,7 @@ SENSEI.visualizations["motion"] = function() {
   paper.setup(canvas[0]);
 
   // recurring routine to draw line chart
-  var drawLineChart = function(name, data, ptr, y0, color, maxVal) {
+  var drawLineChart = function (name, data, ptr, y0, color, maxVal) {
     var x0 = MARGIN;
     var dx = width / SENSEI.MAXNUMSAMPLES;
 
@@ -57,19 +57,19 @@ SENSEI.visualizations["motion"] = function() {
   };
 
   // storing samples into arrays
-  var storeSamples = function(sample, storage, pointer) {
+  var storeSamples = function (sample, storage, pointer) {
     if (pointer >= storage.length) storage.push(sample);
     else storage[pointer] = sample;
   };
 
   // update motion vis
-  SENSEI.updateMotionVis = function(e) {
-    var acceleration = e.originalEvent.acceleration;
+  SENSEI.updateMotionVis = function (e) {
+    var acceleration = e.acceleration;
     storeSamples(acceleration.x, SENSEI.accelXs, SENSEI.pointerSample);
     storeSamples(acceleration.y, SENSEI.accelYs, SENSEI.pointerSample);
     storeSamples(acceleration.z, SENSEI.accelZs, SENSEI.pointerSample);
 
-    var rotationRate = e.originalEvent.rotationRate;
+    var rotationRate = e.rotationRate;
     storeSamples(rotationRate.alpha, SENSEI.rotAlphas, SENSEI.pointerSample);
     storeSamples(rotationRate.beta, SENSEI.rotBetas, SENSEI.pointerSample);
     storeSamples(rotationRate.gamma, SENSEI.rotGammas, SENSEI.pointerSample);
@@ -133,11 +133,24 @@ SENSEI.visualizations["motion"] = function() {
       MAXROTATIONRATE
     );
   };
+
   // add event handler
-  $(window).on("devicemotion", SENSEI.updateMotionVis);
+  if (typeof DeviceMotionEvent.requestPermission === 'function') {
+    DeviceMotionEvent.requestPermission()
+      .then(permissionState => {
+        if (permissionState === 'granted') {
+          window.addEventListener('devicemotion', SENSEI.updateMotionVis);
+        }
+      })
+      .catch(console.error);
+  } else {
+    // handle regular non iOS 13+ devices
+  }
+
+  // $(window).on("devicemotion", SENSEI.updateMotionVis);
 };
 
-SENSEI.clearings["motion"] = function() {
+SENSEI.clearings["motion"] = function () {
   paper.project.activeLayer.removeChildren();
-  $(window).off("devicemotion", SENSEI.updateMotionVis);
+  window.removeEventListener("devicemotion", SENSEI.updateMotionVis);
 };

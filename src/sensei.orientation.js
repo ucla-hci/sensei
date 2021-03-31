@@ -1,12 +1,12 @@
-//	........................................................................................................
+//	.................................................................................................
 //
 //	visualizing device orientation related properties
 //
-//  by xiangchen@acm.org, v1.0 04/2018
+//  by xac@ucla.edu, v2.0 03/2021
 //
 //  ref: https://developer.mozilla.org/en-US/docs/Web/API/Detecting_device_orientation
 //
-//	........................................................................................................
+//	.................................................................................................
 
 var SENSEI = SENSEI || {};
 
@@ -30,8 +30,8 @@ SENSEI.visualizations["orientation"] = function() {
     paper.project.activeLayer.removeChildren();
 
     var xNormalized =
-      (e.originalEvent.gamma - MINGAMMA) / (MAXGAMMA - MINGAMMA);
-    var yNormalized = (e.originalEvent.beta - MINBETA) / (MAXBETA - MINBETA);
+      (e.gamma - MINGAMMA) / (MAXGAMMA - MINGAMMA);
+    var yNormalized = (e.beta - MINBETA) / (MAXBETA - MINBETA);
 
     // make the visual more obvious when the values are small
     xNormalized = 0.5 + (xNormalized - 0.5) * (1 + Math.abs(xNormalized - 0.5));
@@ -59,16 +59,26 @@ SENSEI.visualizations["orientation"] = function() {
     text.fillColor = "black";
     text.content =
       "beta: " +
-      e.originalEvent.beta.toFixed(2) +
+      e.beta.toFixed(2) +
       "\ngamma: " +
-      e.originalEvent.gamma.toFixed(2);
+      e.gamma.toFixed(2);
   };
 
   // add event handler
-  $(window).on("deviceorientation", SENSEI.updateOrientationVis);
+  if (typeof DeviceMotionEvent.requestPermission === 'function') {
+    DeviceMotionEvent.requestPermission()
+      .then(permissionState => {
+        if (permissionState === 'granted') {
+          window.addEventListener('deviceorientation', SENSEI.updateOrientationVis);
+        }
+      })
+      .catch(console.error);
+  } else {
+    // handle regular non iOS 13+ devices
+  }
 };
 
 SENSEI.clearings["orientation"] = function() {
   paper.project.activeLayer.removeChildren();
-  $(window).off("deviceorientation", SENSEI.updateOrientationVis);
+  window.removeEventListener("deviceorientation", SENSEI.updateOrientationVis);
 };

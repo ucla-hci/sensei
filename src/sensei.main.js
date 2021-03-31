@@ -14,9 +14,9 @@ SENSEI.clearings = {};
 //
 //  jquery ready function
 //
-$(document).ready(function() {
+$(document).ready(function () {
   // load config file
-  YAML.load("config.yml", function(result) {
+  YAML.load("config.yml", function (result) {
     Object.assign(SENSEI, result);
     SENSEI.initUI();
   });
@@ -25,13 +25,13 @@ $(document).ready(function() {
 //
 //  initialize ui
 //
-SENSEI.initUI = function() {
+SENSEI.initUI = function () {
   // load ui layout from template
   var mainTable = $("<table></table>");
   mainTable.css("height", "100%");
   mainTable.prop("border", SENSEI.borderMainTable);
   $(document.body).append(mainTable);
-  mainTable.load(SENSEI.mainTablePath, function(e) {
+  mainTable.load(SENSEI.mainTablePath, function (e) {
     // create a dropdown list to select different sensors
     var selSensors = $("#selSensors");
     selSensors.append($('<option selected="selected"> - </option>'));
@@ -42,13 +42,13 @@ SENSEI.initUI = function() {
     }
 
     selSensors.selectmenu({
-      change: function(e, ui) {
+      change: function (e, ui) {
         if (SENSEI.clear != undefined) SENSEI.clear();
         var nameSensor = ui.item.label;
         SENSEI.visualize = SENSEI.visualizations[nameSensor];
         SENSEI.clear = SENSEI.clearings[nameSensor];
         if (SENSEI.visualize != undefined) SENSEI.visualize();
-      }
+      },
     });
     selSensors.selectmenu("option", "width", "100%");
   });
